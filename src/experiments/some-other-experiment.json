@@ -1,0 +1,9 @@
+{
+  "metadata": {
+    "id": "some-other-experiment",
+    "description": "This is another experiment"
+  },
+  "features": {
+    "App": {}
+  }
+}

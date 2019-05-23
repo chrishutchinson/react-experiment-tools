@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "id": "save-the-trees",
+    "description": "Saving the earth from evil trees"
+  },
+  "features": {
+    "Profile": {
+      "confirm-on-connect": {
+        "conditions": [
+          {
+            "field": "userState.propensity",
+            "comparator": "greaterThan",
+            "value": 0.4
+          }
+        ]
+      },
+      "show-profile-image": {
+        "conditions": [
+          {
+            "field": "sessionState.pageViews",
+            "comparator": "greaterThan",
+            "value": 2
+          },
+          {
+            "field": "sessionState.pageViews",
+            "comparator": "lessThan",
+            "value": 4
+          }
+        ]
+      }
+    }
+  }
+}

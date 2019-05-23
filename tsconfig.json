@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es6",
+    "allowJs": true,
+    "lib": ["dom", "es2015", "es2016"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": ["node", "jest"],
+    "noUnusedLocals": true,
+    "jsx": "react",
+    "resolveJsonModule": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
+}
