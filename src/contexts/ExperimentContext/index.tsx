@@ -6,6 +6,27 @@ interface ExperimentFeatureCondition {
   value: string | number;
 }
 
+type Feature =
+  | {
+      type: "boolean";
+      conditions: ExperimentFeatureCondition[];
+    }
+  | {
+      type: "string";
+      value: string;
+      conditions: ExperimentFeatureCondition[];
+    }
+  | {
+      type: "component";
+      value: {
+        name: string;
+        props: {
+          [key: string]: any;
+        };
+      };
+      conditions: ExperimentFeatureCondition[];
+    };
+
 export interface Experiment {
   metadata: {
     id: string;
@@ -13,9 +34,7 @@ export interface Experiment {
   };
   features: {
     [componentName: string]: {
-      [featureName: string]: {
-        conditions: ExperimentFeatureCondition[];
-      };
+      [featureName: string]: Feature;
     };
   };
 }
@@ -24,18 +43,21 @@ export const ExperimentContext = React.createContext(null);
 
 interface ExperimentContextComponentProps<T> {
   experiments: Map<string, Experiment>;
+  components: Map<string, React.ComponentType>;
   data: T;
 }
 
 const ExperimentContextComponent = <T extends any>({
   experiments,
   data,
+  components,
   children
 }: React.PropsWithChildren<ExperimentContextComponentProps<T>>) => (
   <ExperimentContext.Provider
     value={{
       experiments,
-      experimentData: data
+      experimentData: data,
+      registeredComponents: components
     }}
   >
     {children}

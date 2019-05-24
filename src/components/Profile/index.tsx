@@ -9,10 +9,21 @@ import { ProfileContainer } from "./style";
 
 const Profile: React.FunctionComponent = () => {
   const [isConnected, setIsConnected] = React.useState(false);
-  const { isFeatureConditionMet } = useExperiments("Profile");
 
-  const shouldShowImage = isFeatureConditionMet("show-profile-image");
-  const shouldConfirmOnConnect = isFeatureConditionMet("confirm-on-connect");
+  const { checkFeatureConditionMet } = useExperiments("Profile");
+
+  const [shouldShowImage] = checkFeatureConditionMet("show-profile-image");
+  const [shouldConfirmOnConnect] = checkFeatureConditionMet(
+    "confirm-on-connect"
+  );
+  const [
+    shouldChangeConnectButtonText,
+    connectButtonText
+  ] = checkFeatureConditionMet("connect-button-message");
+  const [
+    shouldChangeSharingButtonComponent,
+    sharingButtonComponent
+  ] = checkFeatureConditionMet("sharing-buttons-accounts");
 
   const handleClick = () => {
     if (
@@ -32,12 +43,21 @@ const Profile: React.FunctionComponent = () => {
       <h1>First Last</h1>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 
-      <SocialButtons username="thetimes" />
+      {shouldChangeSharingButtonComponent &&
+      typeof sharingButtonComponent !== "string" ? (
+        <sharingButtonComponent.Component
+          {...sharingButtonComponent.props}
+          username="thetimes"
+        />
+      ) : (
+        <SocialButtons username="thetimes" />
+      )}
 
       <button disabled={isConnected} onClick={handleClick}>
         {!isConnected ? (
           <>
-            Connect <FontAwesomeIcon icon={faPlusCircle} />
+            {shouldChangeConnectButtonText ? connectButtonText : "Connect"}{" "}
+            <FontAwesomeIcon icon={faPlusCircle} />
           </>
         ) : (
           "Connected"

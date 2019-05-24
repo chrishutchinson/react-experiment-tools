@@ -3,7 +3,8 @@ import styled from "styled-components";
 const colors = {
   facebook: "#3c5a99",
   twitter: "#1da1f2",
-  linkedin: "#0077B5"
+  linkedin: "#0077B5",
+  slack: "#e2a52e"
 };
 
 export const SocialButtonsContainer = styled.fieldset`
@@ -15,7 +16,7 @@ export const SocialButtonsContainer = styled.fieldset`
 `;
 
 export const SocialButton = styled.a<{
-  account: "twitter" | "facebook" | "linkedin";
+  account: "twitter" | "facebook" | "linkedin" | "slack";
 }>`
   height: 40px;
   width: 40px;

@@ -25,6 +25,24 @@ const checkConditions = (
   }, true);
 };
 
+const getFeatureValue = (
+  feature: Experiment["features"][0][0],
+  registeredComponents: Map<string, React.ComponentType>
+) => {
+  switch (feature.type) {
+    case "boolean":
+    default:
+      return true;
+    case "string":
+      return feature.value;
+    case "component":
+      return {
+        Component: registeredComponents.get(feature.value.name),
+        props: feature.value.props
+      };
+  }
+};
+
 const useExperiments = (componentName: string) => {
   if (!componentName) {
     throw new Error(
@@ -32,10 +50,22 @@ const useExperiments = (componentName: string) => {
     );
   }
 
-  const { experiments, experimentData } = React.useContext(ExperimentContext);
+  const {
+    experiments,
+    experimentData,
+    registeredComponents
+  } = React.useContext(ExperimentContext);
 
-  const isFeatureConditionMet = (featureName: string): boolean =>
-    [...experiments].reduce((acc, [_, experiment]) => {
+  const checkFeatureConditionMet = (
+    featureName: string
+  ):
+    | [boolean]
+    | [boolean, string]
+    | [
+        boolean,
+        { Component: React.ComponentType<any>; props: { [key: string]: any } }
+      ] => {
+    const conditionResult = [...experiments].reduce((acc, [_, experiment]) => {
       if (!acc) return false;
 
       if (!experiment.features.hasOwnProperty(componentName)) return acc;
@@ -46,11 +76,19 @@ const useExperiments = (componentName: string) => {
       return checkConditions(
         experiment.features[componentName][featureName].conditions,
         experimentData
-      );
+      )
+        ? getFeatureValue(
+            experiment.features[componentName][featureName],
+            registeredComponents
+          )
+        : false;
     }, true);
 
+    return [!!conditionResult, conditionResult];
+  };
+
   return {
-    isFeatureConditionMet
+    checkFeatureConditionMet
   };
 };
 

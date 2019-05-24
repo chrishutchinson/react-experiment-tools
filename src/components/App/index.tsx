@@ -5,6 +5,7 @@ import Profile from "../Profile";
 import experiments from "../../experiments";
 
 import { AppContainer, ControlsContainer } from "./style";
+import SocialButtons from "../SocialButtons";
 
 interface ExperimentData {
   sessionState: {
@@ -14,6 +15,10 @@ interface ExperimentData {
     propensity: number;
   };
 }
+
+const componentMap = new Map<string, React.ComponentType<any>>([
+  ["SocialButtons", SocialButtons]
+]);
 
 const App: React.FunctionComponent = () => {
   const [pageViews, setPageViews] = React.useState(1);
@@ -38,6 +43,7 @@ const App: React.FunctionComponent = () => {
           propensity
         }
       }}
+      components={componentMap}
     >
       <AppContainer>
         <ControlsContainer>

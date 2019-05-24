@@ -6,6 +6,7 @@
   "features": {
     "Profile": {
       "confirm-on-connect": {
+        "type": "boolean",
         "conditions": [
           {
             "field": "userState.propensity",
@@ -15,6 +16,7 @@
         ]
       },
       "show-profile-image": {
+        "type": "boolean",
         "conditions": [
           {
             "field": "sessionState.pageViews",
@@ -25,6 +27,33 @@
             "field": "sessionState.pageViews",
             "comparator": "lessThan",
             "value": 4
+          }
+        ]
+      },
+      "connect-button-message": {
+        "type": "string",
+        "value": "Add as friend",
+        "conditions": [
+          {
+            "field": "sessionState.pageViews",
+            "comparator": "greaterThan",
+            "value": 5
+          }
+        ]
+      },
+      "sharing-buttons-accounts": {
+        "type": "component",
+        "value": {
+          "name": "SocialButtons",
+          "props": {
+            "accounts": ["facebook", "slack", "twitter"]
+          }
+        },
+        "conditions": [
+          {
+            "field": "sessionState.pageViews",
+            "comparator": "lessThan",
+            "value": 5
           }
         ]
       }
